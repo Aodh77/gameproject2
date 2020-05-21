@@ -20,7 +20,7 @@ public class Rship : MonoBehaviour
     public bool arriveEnabled = false;
 
     public GameObject target;
-    //public GameObject newTarget;
+    public GameObject newTarget;
     public Vector3 targetPos;
 
     public float banking = 0.1f;
@@ -29,6 +29,7 @@ public class Rship : MonoBehaviour
 
     void Start()
     {
+        target = FindTarget();
         targetPos = target.transform.position;
     }
 
@@ -48,6 +49,41 @@ public class Rship : MonoBehaviour
             //transform.forward = velocity;
             velocity -= (damping * velocity * Time.deltaTime);
         }
+        target = CheckTarget();
+        targetPos = target.transform.position;
+    }
+    public GameObject FindTarget()
+    {
+        GameObject[] targets;
+        GameObject randTarget = null;
+        targets = GameObject.FindGameObjectsWithTag("Rocinate");
+
+
+        foreach (GameObject target in targets)
+        {
+            int rand;
+            rand = Random.Range(0, targets.Length);
+            randTarget = targets[rand];
+        }
+        return randTarget;
+
+    }
+
+    public GameObject CheckTarget()
+    {
+        GameObject currentTarget = target;
+
+        if (currentTarget.gameObject.tag == "Rocinate")
+        {
+
+        }
+        else
+        {
+            newTarget = FindTarget();
+            currentTarget = newTarget;
+            Debug.Log("switched");
+        }
+        return currentTarget;
     }
 
     public Vector3 CalculateForce()
